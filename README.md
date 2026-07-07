@@ -40,6 +40,8 @@ sudo cp penta_fan.py /usr/local/bin/
 sudo chmod +x /usr/local/bin/penta_fan.py
 ```
 
+Edit the `get_drive_temp` calls with your drive. See your drives here: `ls -la /dev/disk/by-id/`.
+
 ### 3. Install and enable the systemd service
 
 ```bash

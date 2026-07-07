@@ -38,7 +38,8 @@ def get_drive_temp(device):
     if "temperature" in data:
         return data["temperature"]["current"]
 
-    return None
+    print(f"penta-fan: failed to get drive temp")
+    return 0
 
 def cpu_temp_to_duty(t):
     """
@@ -95,7 +96,7 @@ def set_fan(handle, duty):
 def main():
     h = lgpio.gpiochip_open(CHIP)
     lgpio.gpio_claim_output(h, LINE)
-    
+
     # Initialize PWM control by briefly asserting it
     lgpio.tx_pwm(h, LINE, PWM_FREQ, 100)
     time.sleep(0.5)
@@ -124,8 +125,8 @@ def main():
                     fan_enabled = True
             if now_sec - last_hdd_check_sec >= HDD_CHECK_INTERVAL:
                 last_hdd_check_sec = now_sec
-                last_sda_temp = get_drive_temp("/dev/sda")
-                last_sdb_temp = get_drive_temp("/dev/sdb")
+                last_sda_temp = get_drive_temp("/dev/disk/by-id/wwn-0x5000c50087976c3b")
+                last_sdb_temp = get_drive_temp("/dev/disk/by-id/wwn-0x5000c5008780657e")
             cpu_temp = get_cpu_temp()
             sda_temp = last_sda_temp
             sdb_temp = last_sdb_temp
